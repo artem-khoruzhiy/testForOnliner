@@ -30,12 +30,12 @@ public class Test1 {
         catalogOnliner = new CatalogOnliner(driver);
     }
 
-    @Test(dataProvider = "menu", enabled = false)
+    @Test(dataProvider = "menu")
     public void testForExistenceElements(WebElement element){
         assertNotNull(element);
     }
 
-    @Test(dataProvider = "menu", enabled = false)
+    @Test(dataProvider = "menu")
     public void testExistenceFilters(WebElement element){
         assertTrue(catalogOnliner.navigateOnMenu(element).findCountFilters() > 0);
     }
@@ -46,7 +46,7 @@ public class Test1 {
         assertEquals(productPage.geth1OfThisPage(), productPage.getHeader());
     }
 
-    @Test(dataProvider = "menu", enabled = false)
+    @Test(dataProvider = "menu")
     public void testListOfGoods(WebElement element){
         productPage = catalogOnliner.navigateOnMenu(element);
         assertTrue( productPage.findGoodsName().size()> 0);

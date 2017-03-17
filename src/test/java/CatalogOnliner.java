@@ -1,55 +1,57 @@
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Артем on 15.03.2017.
  */
 public class CatalogOnliner {
     private WebDriver driver;
-    private WebDriverWait wait;
 
     @FindBy(linkText = "Мобильные телефоны")
-    private WebElement buttonMobPhones;
+    private WebElement btnMobPhones;
 
     @FindBy(linkText = "Планшеты")
-    private WebElement buttonTablets;
+    private WebElement btnTablets;
 
     @FindBy(linkText = "Ноутбуки")
-    private WebElement buttonLaptops;
+    private WebElement btnLaptops;
 
     @FindBy(linkText = "Телевизоры")
-    private WebElement buttonTVs;
+    private WebElement btnTVs;
 
     public CatalogOnliner(WebDriver driver){
         this.driver = driver;
-        wait = new WebDriverWait(driver, 10);
         PageFactory.initElements(driver, this);
     }
 
 
     public ProductPage navigateOnMenu(WebElement element){
         element.click();
-        return new ProductPage(driver, element.getText());
+        String a;
+        try {
+            a = element.getText();
+        }catch (StaleElementReferenceException e){
+            a = element.getText();
+        }
+        return new ProductPage(driver, a);
     }
 
-    public WebElement getButtonMobPhones() {
-        return buttonMobPhones;
+    public WebElement getBtnMobPhones() {
+        return btnMobPhones;
     }
 
-    public WebElement getButtonTablets() {
-        return buttonTablets;
+    public WebElement getBtnTablets() {
+        return btnTablets;
     }
 
-    public WebElement getButtonLaptops() {
-        return buttonLaptops;
+    public WebElement getBtnLaptops() {
+        return btnLaptops;
     }
 
-    public WebElement getButtonTVs() {
-        return buttonTVs;
+    public WebElement getBtnTVs() {
+        return btnTVs;
     }
 }

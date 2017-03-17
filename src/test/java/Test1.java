@@ -1,7 +1,6 @@
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.*;
 
 import static org.testng.Assert.*;
@@ -13,15 +12,14 @@ public class Test1 {
     private WebDriver driver;
     private CatalogOnliner catalogOnliner;
     private ProductPage productPage;
-    private WebDriverWait wait;
 
     @DataProvider(name = "menu")
     public Object[][] getElementsMenu() {
         return new Object[][] {
-                {catalogOnliner.getButtonMobPhones()},
-                {catalogOnliner.getButtonTablets()},
-                {catalogOnliner.getButtonLaptops()},
-                {catalogOnliner.getButtonTVs()},
+                {catalogOnliner.getBtnMobPhones()},
+                {catalogOnliner.getBtnTablets()},
+                {catalogOnliner.getBtnLaptops()},
+                {catalogOnliner.getBtnTVs()},
         };
     }
 
@@ -32,12 +30,12 @@ public class Test1 {
         catalogOnliner = new CatalogOnliner(driver);
     }
 
-    @Test(dataProvider = "menu")
+    @Test(dataProvider = "menu", enabled = false)
     public void testForExistenceElements(WebElement element){
         assertNotNull(element);
     }
 
-    @Test(dataProvider = "menu")
+    @Test(dataProvider = "menu", enabled = false)
     public void testExistenceFilters(WebElement element){
         assertTrue(catalogOnliner.navigateOnMenu(element).findCountFilters() > 0);
     }
@@ -45,12 +43,10 @@ public class Test1 {
     @Test(dataProvider = "menu")
     public void testHeading(WebElement element) throws Exception{
         productPage = catalogOnliner.navigateOnMenu(element);
-        String h1 = productPage.geth1OfThisPage();
-        String h1Exp = productPage.getHeader();
-        assertEquals(h1, h1Exp);
+        assertEquals(productPage.geth1OfThisPage(), productPage.getHeader());
     }
 
-    @Test(dataProvider = "menu")
+    @Test(dataProvider = "menu", enabled = false)
     public void testListOfGoods(WebElement element){
         productPage = catalogOnliner.navigateOnMenu(element);
         assertTrue( productPage.findGoodsName().size()> 0);
@@ -65,4 +61,6 @@ public class Test1 {
     public void teardown(){
         driver.quit();
     }
+
+
 }

@@ -2,10 +2,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -15,19 +13,22 @@ import java.util.concurrent.TimeUnit;
  */
 public class ProductPage {
     private WebDriver driver;
+    private WebDriverWait wait;
     private List<WebElement> filters;
     private String header;
-    private WebDriverWait wait;
-    private By h1Locator;
+
+
     private By locatorOfListProduct = By.xpath("//div[@class='schema-product__title']//span");
     private By filtersLocator = By.xpath("//*[@id='schema-filter']/*[1]/*");
+    private String h1 = "//h1[text()='%s']";
+    private String locatorForChooseByProducer = "//span[text()='Производитель']/../..//li//span[text()='%s']";
 
-    public ProductPage(WebDriver driver, String header){
-        this.header = header;
+    public ProductPage(WebDriver driver, String head){
+        this.header = head;
         this.driver = driver;
-        driver.manage().timeouts().implicitlyWait(40, TimeUnit.SECONDS);
-        wait = new WebDriverWait(driver, 50);
-        h1Locator = By.xpath("//h1[text()='" + header + "']");
+        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+        driver.manage().timeouts().pageLoadTimeout(20, TimeUnit.SECONDS);
+        wait = new WebDriverWait(driver, 15);
     }
 
     public int findCountFilters(){
@@ -45,9 +46,8 @@ public class ProductPage {
     }
 
     public List<String> returnNamesByProducer(String producer) throws Exception{
-        By locatorForChooseByProducer = By.xpath("//span[text()='Производитель']/../..//li//span[text()='" + producer + "']");
-        driver.findElement(locatorForChooseByProducer).click();
-        List<String> names = new ArrayList<String>();
+        driver.findElement(By.xpath(String.format(locatorForChooseByProducer, producer))).click();
+        List<String> names;
         try {
             names = findGoodsName();
         }catch (StaleElementReferenceException e){
@@ -57,7 +57,7 @@ public class ProductPage {
     }
 
     public String geth1OfThisPage() {
-        return wait.until(ExpectedConditions.presenceOfElementLocated(h1Locator)).getText();
+        return driver.findElement(By.xpath(String.format(h1, header))).getText();
     }
 
     public String getHeader() {

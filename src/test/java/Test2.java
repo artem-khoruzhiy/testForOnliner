@@ -30,10 +30,10 @@ public class Test2 {
     }
 
     @BeforeMethod
-    public void localSettings(){
+    public void localSetup(){
         driver.get("https://catalog.onliner.by");
         catalogOnliner = new CatalogOnliner(driver);
-        productPage = catalogOnliner.navigateOnMenu(catalogOnliner.getButtonMobPhones());
+        productPage = catalogOnliner.navigateOnMenu(catalogOnliner.getBtnMobPhones());
     }
 
     @Test(dataProvider = "producers")
@@ -43,8 +43,10 @@ public class Test2 {
         for (String good : goods) {
             if (good.contains(producer))
                 condition = true;
-            else
+            else {
                 condition = false;
+                break;
+            }
         }
         assertTrue(condition);
     }
